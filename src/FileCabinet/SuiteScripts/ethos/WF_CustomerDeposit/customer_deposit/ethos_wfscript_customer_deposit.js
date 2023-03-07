@@ -3,12 +3,6 @@
  * @NScriptType WorkflowActionScript
  */
 define(['N/file', 'N/query', 'N/record', 'N/render'],
-    /**
- * @param{file} file
- * @param{query} query
- * @param{record} record
- * @param{render} render
- */
     (file, query, record, render) => {
         /**
          * Defines the WorkflowAction script trigger point.
@@ -22,6 +16,17 @@ define(['N/file', 'N/query', 'N/record', 'N/render'],
          */
         const onAction = (scriptContext) => {
 
+            log.debug({ title : 'Testing Workflow Action Script', details : 'WFScript' });
+
+            generateReport();
+
+        }
+
+        const generateReport = () =>
+        {
+            let renderer = render.create();
+
+            log.debug({ title : 'Testing Renderer', details : renderer});
         }
 
         return {onAction};
