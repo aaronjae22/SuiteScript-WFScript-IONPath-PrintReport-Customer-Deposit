@@ -18,7 +18,7 @@ define(['N/file', 'N/query', 'N/record', 'N/render'],
 
             const customerDeposit = scriptContext.newRecord;
 
-            log.debug({ title : 'Testing Workflow Action Script', details : 'WFScript' });
+            // log.debug({ title : 'Testing Workflow Action Script', details : 'WFScript' });
 
             // Getting Payment Events List Info from Netsuite //
             let paymentEventsListName = 'paymentevent';
@@ -76,12 +76,34 @@ define(['N/file', 'N/query', 'N/record', 'N/render'],
                     };
 
                 depositData.paymentEvents.push(eventRecord);
-                log.debug({ title : 'Iterating over Event: ' + 1 , details : depositData });
+
+                // log.debug({ title : 'EVENT RECORD', details : eventRecord});
             }
 
+            log.debug({ title : 'DEPOSIT DATA', details : depositData});
 
             // generateReport();
 
+            const reportPDFTemplate = '/SuiteScripts/ethos/WF_CustomerDeposit/html_templates/customer_deposit_report.html';
+
+            const renderer = render.create();
+
+            const templateFile = file.load({id : reportPDFTemplate});
+            log.debug({title : 'TEMPLATE FILE', details : templateFile});
+
+            renderer.addCustomDataSource({
+                alias : 'record',
+                format : render.DataSource.OBJECT,
+                data : depositData,
+            });
+
+            renderer.templateContent = templateFile.getContents();
+            log.debug({title : 'RENDERER TEMPLATE CONTENT', details: renderer.templateContent});
+
+            /*const pdfFile = renderer.renderAsPdf();
+            log.debug({title: 'PDF FILE', details: pdfFile});*/
+
+            // scriptContext.response.writeFile(pdfFile, true);
         }
 
         /* const generateReport = () =>
