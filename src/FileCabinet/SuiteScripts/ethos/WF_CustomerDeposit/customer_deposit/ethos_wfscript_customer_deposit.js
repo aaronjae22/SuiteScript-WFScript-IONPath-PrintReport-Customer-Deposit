@@ -25,7 +25,7 @@ define(['N/file', 'N/query', 'N/record', 'N/render'],
 
             log.debug({title : 'DEPOSIT DATA', details : depositData});
 
-            generateReport(scriptContext, depositData);
+            return generateReport(scriptContext, depositData);
 
         }
 
@@ -120,11 +120,12 @@ define(['N/file', 'N/query', 'N/record', 'N/render'],
             renderer.templateContent = templateFile.getContents();
             log.debug({title : 'RENDERER TEMPLATE CONTENT', details: renderer.templateContent});
 
-            /*const pdfFile = renderer.renderAsPdf();
-            log.debug({title: 'PDF FILE', details: pdfFile}); */
+            const pdfFile = renderer.renderAsPdf();
+            log.debug({title: 'PDF FILE', details: pdfFile});
 
-            // scriptContext.response.writeFile(pdfFile, true);
+            return scriptContext.response.writeFile(pdfFile, true);
         }
 
     return {onAction};
     });
+
