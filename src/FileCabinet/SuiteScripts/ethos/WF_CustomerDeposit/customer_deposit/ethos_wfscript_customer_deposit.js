@@ -20,6 +20,21 @@ define(['N/file', 'N/query', 'N/record', 'N/render'],
 
             // log.debug({ title : 'Testing Workflow Action Script', details : 'WFScript' });
 
+            // Loading Customer Deposit Data from Netsuite //
+            let depositData = getDepositInfo(customerDeposit);
+
+            log.debug({title : 'DEPOSIT DATA', details : depositData});
+
+            generateReport(scriptContext, depositData);
+
+        }
+
+        const getDepositInfo = (customerDepositScriptContext) =>
+        {
+            // log.debug({ title : 'Testing get deposit info function', details : 'getDepositInfo()'});
+
+            const customerDeposit = customerDepositScriptContext;
+
             // Getting Payment Events List Info from Netsuite //
             let paymentEventsListName = 'paymentevent';
             let lineCount = customerDeposit.getLineCount({sublistId : paymentEventsListName});
@@ -80,9 +95,14 @@ define(['N/file', 'N/query', 'N/record', 'N/render'],
                 // log.debug({ title : 'EVENT RECORD', details : eventRecord});
             }
 
-            log.debug({ title : 'DEPOSIT DATA', details : depositData});
+            // log.debug({ title : 'DEPOSIT DATA', details : depositData});
+            return depositData;
+        }
 
-            // generateReport();
+
+        const generateReport = (scriptContext, depositData) =>
+        {
+            // log.debug({ title : 'Testing generate report function', details : 'generateReport'});
 
             const reportPDFTemplate = '/SuiteScripts/ethos/WF_CustomerDeposit/html_templates/customer_deposit_report.html';
 
@@ -101,17 +121,10 @@ define(['N/file', 'N/query', 'N/record', 'N/render'],
             log.debug({title : 'RENDERER TEMPLATE CONTENT', details: renderer.templateContent});
 
             /*const pdfFile = renderer.renderAsPdf();
-            log.debug({title: 'PDF FILE', details: pdfFile});*/
+            log.debug({title: 'PDF FILE', details: pdfFile}); */
 
             // scriptContext.response.writeFile(pdfFile, true);
         }
 
-        /* const generateReport = () =>
-        {
-            let renderer = render.create();
-
-            log.debug({ title : 'Testing Renderer', details : renderer});
-        } */
-
-        return {onAction};
+    return {onAction};
     });
